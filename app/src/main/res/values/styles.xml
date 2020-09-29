@@ -1,0 +1,22 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorWhite</item>
+        <item name="colorPrimaryDark">@color/colorBlack</item>
+        <item name="colorAccent">@color/colorBlack</item>
+    </style>
+
+    <style name="AlertDialogStyle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <!--button-->
+        <item name="colorPrimary">?attr/colorAccent</item>
+        <item name="android:background">?attr/colorSurface</item>
+    </style>
+
+    <style name="AugnoteChoiceChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/augnote_chip_background_color</item>
+        <item name="android:textColor">@color/augnote_chip_text_color</item>
+    </style>
+
+
+</resources>

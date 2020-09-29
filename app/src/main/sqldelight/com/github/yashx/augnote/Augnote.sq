@@ -1,0 +1,64 @@
+CREATE TABLE Folder(
+    folderId INTEGER PRIMARY KEY,
+    parentId INTEGER NOT NULL,
+    name TEXT NOT NULL,
+
+    FOREIGN KEY (parentId) REFERENCES Folder(folderId) ON DELETE CASCADE
+);
+
+CREATE TABLE Tag(
+    tagId INTEGER PRIMARY KEY,
+    parentId INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    linkTo TEXT NOT NULL,
+
+    FOREIGN KEY (parentId) REFERENCES Folder(folderId) ON DELETE CASCADE
+);
+
+INSERT INTO Folder
+VALUES (0,-1,"root");
+
+-- Query
+getTag:
+SELECT * FROM Tag WHERE tagId = ?;
+
+getTagsForQuery:
+SELECT * FROM Tag WHERE name LIKE '%' || :query || '%';
+
+itemsInFolder:
+SELECT folderId AS id, name, "Folder" AS type, NULL AS "data"
+FROM Folder
+WHERE parentId = :folderId
+UNION ALL
+SELECT tagId AS id, name, "Tag" AS type, linkTo AS "data"
+FROM Tag
+WHERE parentId = :folderId;
+
+-- Insert
+insertFolder:
+INSERT INTO Folder(name, parentId)
+VALUES (?,?);
+
+insertTag:
+INSERT INTO Tag(name, parentId, linkTo)
+VALUES (?,?,?);
+
+-- Delete
+deleteFolder:
+DELETE FROM Folder
+WHERE folderId = ?;
+
+deleteTag:
+DELETE FROM Tag
+WHERE tagId = ?;
+
+-- Update
+updateFolder:
+UPDATE Folder
+SET name = ?
+WHERE folderId = ?;
+
+updateTag:
+UPDATE Tag
+SET name = ?, linkTo = ?
+WHERE tagId = ?;

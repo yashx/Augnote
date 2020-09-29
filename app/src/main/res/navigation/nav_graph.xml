@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/listFragment">
+
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.github.yashx.augnote.list.ListFragment"
+        android:label="ListFragment">
+        <argument
+            android:name="folderId"
+            android:defaultValue="0L"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_listFragment_self"
+            app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_addFolderDialogFragment"
+            app:destination="@id/addFolderDialogFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_tagDialogFragment"
+            app:destination="@id/tagDialogFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/addFolderDialogFragment"
+        android:name="com.github.yashx.augnote.AddFolderDialogFragment"
+        android:label="AddFolderDialogFragment">
+        <argument
+            android:name="parentFolderId"
+            app:argType="long" />
+    </dialog>
+    <dialog
+        android:id="@+id/tagDialogFragment"
+        android:name="com.github.yashx.augnote.TagDialogFragment"
+        android:label="AugRelationDialogFragment">
+        <argument
+            android:name="parentFolderId"
+            app:argType="long" />
+    </dialog>
+</navigation>

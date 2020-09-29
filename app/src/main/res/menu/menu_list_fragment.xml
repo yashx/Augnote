@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/add_folder"
+        android:id="@+id/addFolderToList"/>
+    <item android:title="@string/add_tag"
+        android:id="@+id/addRelationToList"/>
+    <item android:title="@string/search"
+        android:id="@+id/searchList"/>
+    <item android:title="@string/scan"
+        android:id="@+id/barcodeScan"/>
+</menu>
