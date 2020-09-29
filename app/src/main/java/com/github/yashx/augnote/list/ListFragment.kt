@@ -27,6 +27,7 @@ class ListFragment : Fragment(), ListRecyclerViewAdapter.OnItemClickListener, Fi
     private lateinit var binding: FragmentListBinding
     private val args: ListFragmentArgs by navArgs()
     private val fileOpenerHelper: FileOpenerHelper by lazy { FileOpenerHelper(requireContext(), this) }
+    private lateinit var listRecyclerViewAdapter: ListRecyclerViewAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
@@ -37,7 +38,7 @@ class ListFragment : Fragment(), ListRecyclerViewAdapter.OnItemClickListener, Fi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val listRecyclerViewAdapter = ListRecyclerViewAdapter(this@ListFragment).apply {
+        listRecyclerViewAdapter = ListRecyclerViewAdapter(this@ListFragment).apply {
             setHasStableIds(true)
         }
 
@@ -71,8 +72,8 @@ class ListFragment : Fragment(), ListRecyclerViewAdapter.OnItemClickListener, Fi
 
     override fun onItemLongClick(item: ItemsInFolder) {
         when (item.type) {
-            "Folder" -> "a"
-            "Tag" -> "b"
+            "Folder" -> {queries.deleteFolder(item.id); listRecyclerViewAdapter.notifyDataSetChanged()}
+            "Tag" -> {queries.deleteTag(item.id); listRecyclerViewAdapter.notifyDataSetChanged()}
         }
     }
 
