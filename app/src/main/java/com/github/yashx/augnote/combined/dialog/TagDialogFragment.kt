@@ -1,4 +1,4 @@
-package com.github.yashx.augnote
+package com.github.yashx.augnote.combined.dialog
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -11,6 +11,9 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.navArgs
+import com.github.yashx.augnote.AugnoteQueries
+import com.github.yashx.augnote.helper.FileSelectorHelper
+import com.github.yashx.augnote.R
 import com.github.yashx.augnote.databinding.DialogFragmentTagBinding
 import org.koin.android.ext.android.inject
 

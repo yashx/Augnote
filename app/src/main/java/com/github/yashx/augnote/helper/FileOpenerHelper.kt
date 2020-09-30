@@ -1,10 +1,11 @@
-package com.github.yashx.augnote
+package com.github.yashx.augnote.helper
 
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.webkit.URLUtil
+import com.github.yashx.augnote.R
 import timber.log.Timber
 import java.io.FileNotFoundException
 

@@ -5,6 +5,9 @@
         <item name="colorPrimary">@color/colorWhite</item>
         <item name="colorPrimaryDark">@color/colorBlack</item>
         <item name="colorAccent">@color/colorBlack</item>
+        <item name="colorOnPrimary">@color/colorBlack</item>
+        <item name="colorOnBackground">@color/colorBlack</item>
+        <item name="colorControlNormal">@color/colorBlack</item>
     </style>
 
     <style name="AlertDialogStyle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">

@@ -1,4 +1,4 @@
-package com.github.yashx.augnote.list
+package com.github.yashx.augnote.combined
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import com.github.yashx.augnote.ItemsInFolder
 import com.github.yashx.augnote.R
 import com.github.yashx.augnote.databinding.ListItemBinding
 
-class ListRecyclerViewAdapter(private val listener: OnItemClickListener) : RecyclerView.Adapter<ListRecyclerViewAdapter.ListViewHolder>() {
+class CombinedListAdapter(private val listener: OnItemClickListener) : RecyclerView.Adapter<CombinedListAdapter.ListViewHolder>() {
 
     interface OnItemClickListener {
         fun onItemClick(item: ItemsInFolder)

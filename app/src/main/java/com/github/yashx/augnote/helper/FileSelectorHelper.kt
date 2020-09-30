@@ -1,4 +1,4 @@
-package com.github.yashx.augnote
+package com.github.yashx.augnote.helper
 
 import android.app.Activity
 import android.content.ActivityNotFoundException

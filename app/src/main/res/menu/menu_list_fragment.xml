@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="@string/add_folder"
-        android:id="@+id/addFolderToList"/>
-    <item android:title="@string/add_tag"
-        android:id="@+id/addRelationToList"/>
-    <item android:title="@string/search"
-        android:id="@+id/searchList"/>
-    <item android:title="@string/scan"
-        android:id="@+id/barcodeScan"/>
+    <item
+        android:id="@+id/addFolderToList"
+        android:icon="@drawable/ic_new_folder"
+        android:title="@string/add_folder"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/addTagToList"
+        android:icon="@drawable/ic_file_add"
+        android:title="@string/add_tag"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/searchList"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/barcodeScan"
+        android:title="@string/scan" />
 </menu>

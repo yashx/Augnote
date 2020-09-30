@@ -1,4 +1,4 @@
-package com.github.yashx.augnote.list
+package com.github.yashx.augnote.combined
 
 import android.net.Uri
 import android.os.Bundle
@@ -11,46 +11,46 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yashx.augnote.AugnoteQueries
-import com.github.yashx.augnote.FileOpenerHelper
 import com.github.yashx.augnote.ItemsInFolder
 import com.github.yashx.augnote.R
-import com.github.yashx.augnote.databinding.FragmentListBinding
+import com.github.yashx.augnote.databinding.FragmentCombinedListBinding
+import com.github.yashx.augnote.helper.FileOpenerHelper
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
-class ListFragment : Fragment(), ListRecyclerViewAdapter.OnItemClickListener, FileOpenerHelper.Listener {
+class CombinedListFragment : Fragment(), CombinedListAdapter.OnItemClickListener, FileOpenerHelper.Listener {
 
     private val queries: AugnoteQueries by inject()
-    private lateinit var binding: FragmentListBinding
-    private val args: ListFragmentArgs by navArgs()
+    private lateinit var binding: FragmentCombinedListBinding
+    private val args: CombinedListFragmentArgs by navArgs()
     private val fileOpenerHelper: FileOpenerHelper by lazy { FileOpenerHelper(requireContext(), this) }
-    private lateinit var listRecyclerViewAdapter: ListRecyclerViewAdapter
+    private lateinit var combinedListAdapter: CombinedListAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
-        binding = FragmentListBinding.inflate(inflater, container, false)
+        binding = FragmentCombinedListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listRecyclerViewAdapter = ListRecyclerViewAdapter(this@ListFragment).apply {
+        combinedListAdapter = CombinedListAdapter(this@CombinedListFragment).apply {
             setHasStableIds(true)
         }
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = listRecyclerViewAdapter
+            adapter = combinedListAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
 
         lifecycleScope.launch {
             queries.itemsInFolder(args.folderId).asFlow().mapToList().collect {
-                listRecyclerViewAdapter.changeData(it)
+                combinedListAdapter.changeData(it)
             }
         }
 
@@ -62,7 +62,7 @@ class ListFragment : Fragment(), ListRecyclerViewAdapter.OnItemClickListener, Fi
 
     override fun onItemClick(item: ItemsInFolder) {
         when (item.type) {
-            "Folder" -> findNavController().navigate(ListFragmentDirections.actionListFragmentSelf(item.id))
+            "Folder" -> findNavController().navigate(CombinedListFragmentDirections.actionCombinedListFragmentSelf(item.id))
             "Tag" -> {
                 val uri = Uri.parse(item.data)
                 fileOpenerHelper.openUri(uri)
@@ -72,27 +72,38 @@ class ListFragment : Fragment(), ListRecyclerViewAdapter.OnItemClickListener, Fi
 
     override fun onItemLongClick(item: ItemsInFolder) {
         when (item.type) {
-            "Folder" -> {queries.deleteFolder(item.id); listRecyclerViewAdapter.notifyDataSetChanged()}
-            "Tag" -> {queries.deleteTag(item.id); listRecyclerViewAdapter.notifyDataSetChanged()}
+            "Folder" -> {
+                queries.deleteFolder(item.id); combinedListAdapter.notifyDataSetChanged()
+            }
+            "Tag" -> {
+                queries.deleteTag(item.id); combinedListAdapter.notifyDataSetChanged()
+            }
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_list_fragment, menu)
+        if (args.folderId == 0L) {
+            menu.findItem(R.id.addTagToList).isVisible = false
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
             R.id.addFolderToList -> {
-                findNavController().navigate(ListFragmentDirections.actionListFragmentToAddFolderDialogFragment(args.folderId))
+                findNavController().navigate(CombinedListFragmentDirections.actionCombinedListFragmentToAddFolderDialogFragment(args.folderId))
                 true
             }
-            R.id.addRelationToList -> {
-                findNavController().navigate(ListFragmentDirections.actionListFragmentToTagDialogFragment(args.folderId))
+            R.id.addTagToList -> {
+                findNavController().navigate(CombinedListFragmentDirections.actionCombinedListFragmentToTagDialogFragment(args.folderId))
                 true
             }
-            R.id.searchList, R.id.barcodeScan -> true
+            R.id.searchList -> {
+                findNavController().navigate(CombinedListFragmentDirections.actionCombinedListFragmentToSearchListFragment())
+                true
+            }
+            R.id.barcodeScan -> true
             else -> false
         }
 }
