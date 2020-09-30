@@ -44,7 +44,7 @@ class FileOpenerHelper(private val context: Context, private val listener: Liste
         Timber.e(uri.toString())
 
         // checking if file can be accessed
-        if (!URLUtil.isValidUrl(uri.toString()))
+        if (!(URLUtil.isHttpUrl(uri.toString()) or URLUtil.isHttpsUrl(uri.toString())))
             if (!canAccessFile(uri))
                 return
 
