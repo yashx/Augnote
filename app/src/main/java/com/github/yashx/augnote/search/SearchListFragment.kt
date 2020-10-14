@@ -11,6 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.yashx.augnote.AugnoteQueries
+import com.github.yashx.augnote.BaseFragment
+import com.github.yashx.augnote.R
 import com.github.yashx.augnote.Tag
 import com.github.yashx.augnote.databinding.FragmentSearchListBinding
 import com.github.yashx.augnote.helper.FileOpenerHelper
@@ -21,7 +23,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
-class SearchListFragment : Fragment(), SearchListAdapter.OnItemClickListener, FileOpenerHelper.Listener {
+class SearchListFragment : BaseFragment(), SearchListAdapter.OnItemClickListener, FileOpenerHelper.Listener {
     private val queries: AugnoteQueries by inject()
     private lateinit var binding: FragmentSearchListBinding
     private val fileOpenerHelper: FileOpenerHelper by lazy { FileOpenerHelper(requireContext(), this) }
@@ -32,6 +34,10 @@ class SearchListFragment : Fragment(), SearchListAdapter.OnItemClickListener, Fi
         binding = FragmentSearchListBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+    override fun shouldShowBackButton() = true
+
+    override fun fragmentTitle() = "Search"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -80,6 +86,6 @@ class SearchListFragment : Fragment(), SearchListAdapter.OnItemClickListener, Fi
     }
 
     override fun onFail(reason: FileOpenerHelper.FailureReason) {
-        Toast.makeText(requireContext(), reason.message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), R.string.cant_access_file, Toast.LENGTH_SHORT).show()
     }
 }

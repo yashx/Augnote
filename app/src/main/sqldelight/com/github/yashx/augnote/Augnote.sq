@@ -16,9 +16,12 @@ CREATE TABLE Tag(
 );
 
 INSERT INTO Folder
-VALUES (0,-1,"root");
+VALUES (0,-1,"Home");
 
 -- Query
+getFolder:
+SELECT * FROM Folder WHERE folderId = ?;
+
 getTag:
 SELECT * FROM Tag WHERE tagId = ?;
 
@@ -53,12 +56,12 @@ DELETE FROM Tag
 WHERE tagId = ?;
 
 -- Update
-updateFolder:
+updateFolderName:
 UPDATE Folder
 SET name = ?
 WHERE folderId = ?;
 
-updateTag:
+updateTagName:
 UPDATE Tag
-SET name = ?, linkTo = ?
+SET name = ?
 WHERE tagId = ?;

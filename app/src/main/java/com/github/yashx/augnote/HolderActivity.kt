@@ -3,31 +3,39 @@ package com.github.yashx.augnote
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import com.github.yashx.augnote.databinding.ActivityHolderBinding
+
 
 class HolderActivity : AppCompatActivity() {
 
-    private lateinit var navController: NavController
+    private lateinit var binding: ActivityHolderBinding
+    var backButtonVisible: Boolean = true
+        set(value) {
+            supportActionBar?.setDisplayHomeAsUpEnabled(value)
+            field = value
+        }
+
+    var toolbarTitle:String = "Home"
+    set(value) {
+        binding.holderActivityToolbar.title = value
+        field = value
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        with(ActivityHolderBinding.inflate(layoutInflater)) {
+        binding = ActivityHolderBinding.inflate(layoutInflater)
+        with(binding) {
             setContentView(root)
-            val fragment = supportFragmentManager.findFragmentByTag("holder") as NavHostFragment
-            navController = fragment.navController
-            bottomAppBar.setupWithNavController(fragment.navController, AppBarConfiguration(fragment.navController.graph))
             setSupportActionBar(bottomAppBar)
         }
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == android.R.id.home){
-            navController.popBackStack()
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
         }
         return false
     }

@@ -12,28 +12,33 @@ import com.github.yashx.augnote.R
 import com.github.yashx.augnote.databinding.DialogFragmentEditTextBinding
 import org.koin.android.ext.android.inject
 
-class AddFolderDialogFragment : DialogFragment() {
-
+class EditNameDialogFragment : DialogFragment() {
     private val queries: AugnoteQueries by inject()
-    private val args: AddFolderDialogFragmentArgs by navArgs()
+    private val args: EditNameDialogFragmentArgs by navArgs()
     private lateinit var binding: DialogFragmentEditTextBinding
+    private lateinit var name: String
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
+        name = when (args.itemType) {
+            "Folder" -> queries.getFolder(args.itemId).executeAsOne().name
+            else -> queries.getTag(args.itemId).executeAsOne().name
+
+        }
         binding = DialogFragmentEditTextBinding.inflate(layoutInflater).apply {
             root.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
             )
-            input.setText(requireContext().getString(R.string.new_folder))
+            input.setText(name)
         }
 
         return with(AlertDialog.Builder(context, R.style.AlertDialogStyle)) {
-            setTitle(R.string.folder_name)
+            setTitle(R.string.name)
             setView(binding.root)
-            setPositiveButton(R.string.create, null)
+            setPositiveButton(R.string.update, null)
             setNegativeButton(R.string.cancel) { _, _ ->
-                this@AddFolderDialogFragment.dismiss()
+                this@EditNameDialogFragment.dismiss()
             }
             create()
         }
@@ -45,13 +50,22 @@ class AddFolderDialogFragment : DialogFragment() {
         // dialog doesn't dismiss automatically when positive button is clicked
         (dialog as? AlertDialog)?.apply {
             getButton(Dialog.BUTTON_POSITIVE).setOnClickListener {
-                if (binding.input.text.toString().isBlank()) {
-                    Toast.makeText(context, R.string.no_name_given, Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
+
+                with(binding.input.text.toString()) {
+                    if (isBlank()) {
+                        Toast.makeText(context, R.string.no_name_given, Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+                    if (this != name) {
+                        when (args.itemType) {
+                            "Folder" -> queries.updateFolderName(this, args.itemId)
+                            "Tag" -> queries.updateTagName(this, args.itemId)
+                        }
+                    }
                 }
-                queries.insertFolder(binding.input.text.toString(), args.parentFolderId)
-                this@AddFolderDialogFragment.dismiss()
+                this@EditNameDialogFragment.dismiss()
             }
         }
     }
+
 }

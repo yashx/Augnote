@@ -4,24 +4,24 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.yashx.augnote.AugnoteQueries
-import com.github.yashx.augnote.ItemsInFolder
-import com.github.yashx.augnote.R
+import com.github.yashx.augnote.*
 import com.github.yashx.augnote.databinding.FragmentCombinedListBinding
 import com.github.yashx.augnote.helper.FileOpenerHelper
+import com.mikepenz.aboutlibraries.LibsBuilder
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
-class CombinedListFragment : Fragment(), CombinedListAdapter.OnItemClickListener, FileOpenerHelper.Listener {
+class CombinedListFragment : BaseFragment(), CombinedListAdapter.OnItemClickListener, FileOpenerHelper.Listener {
 
     private val queries: AugnoteQueries by inject()
     private lateinit var binding: FragmentCombinedListBinding
@@ -56,8 +56,12 @@ class CombinedListFragment : Fragment(), CombinedListAdapter.OnItemClickListener
 
     }
 
+    override fun shouldShowBackButton() = args.folderId != 0L
+
+    override fun fragmentTitle() = queries.getFolder(args.folderId).executeAsOne().name
+
     override fun onFail(reason: FileOpenerHelper.FailureReason) {
-        Toast.makeText(requireContext(), reason.message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), R.string.cant_access_file, Toast.LENGTH_SHORT).show()
     }
 
     override fun onItemClick(item: ItemsInFolder) {
@@ -103,7 +107,11 @@ class CombinedListFragment : Fragment(), CombinedListAdapter.OnItemClickListener
                 findNavController().navigate(CombinedListFragmentDirections.actionCombinedListFragmentToSearchListFragment())
                 true
             }
-            R.id.barcodeScan -> true
+            R.id.barcodeScan -> {
+                // change
+                findNavController().navigate(CombinedListFragmentDirections.actionCombinedListFragmentToAboutFragment(LibsBuilder()))
+                true
+            }
             else -> false
         }
 }

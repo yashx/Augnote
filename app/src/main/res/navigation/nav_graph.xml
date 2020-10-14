@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/combinedListFragment">
 
@@ -24,6 +25,12 @@
         <action
             android:id="@+id/action_combinedListFragment_to_searchListFragment"
             app:destination="@id/searchListFragment" />
+        <action
+            android:id="@+id/action_combinedListFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+        <action
+            android:id="@+id/action_combinedListFragment_to_editNameDialogFragment"
+            app:destination="@id/editNameDialogFragment" />
     </fragment>
     <dialog
         android:id="@+id/addFolderDialogFragment"
@@ -45,4 +52,23 @@
         android:id="@+id/searchListFragment"
         android:name="com.github.yashx.augnote.search.SearchListFragment"
         android:label="SearchListFragment" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.mikepenz.aboutlibraries.ui.LibsSupportFragment"
+        android:label="fragment_about" >
+        <argument
+            android:name="data"
+            app:argType="com.mikepenz.aboutlibraries.LibsBuilder" />
+    </fragment>
+    <dialog
+        android:id="@+id/editNameDialogFragment"
+        android:name="com.github.yashx.augnote.combined.dialog.EditNameDialogFragment"
+        android:label="EditNameDialogFragment" >
+        <argument
+            android:name="itemId"
+            app:argType="long" />
+        <argument
+            android:name="itemType"
+            app:argType="string" />
+    </dialog>
 </navigation>
