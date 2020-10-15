@@ -8,10 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.yashx.augnote.ItemsInFolder
 import com.github.yashx.augnote.R
 import com.github.yashx.augnote.databinding.ListItemBinding
+import com.github.yashx.augnote.databinding.ViewEmptyBinding
 import com.github.yashx.augnote.helper.TagType
 import com.github.yashx.augnote.helper.tagType
 
-class CombinedListAdapter(private val listener: OnItemClickListener) : RecyclerView.Adapter<CombinedListAdapter.ListViewHolder>() {
+class CombinedListAdapter(private val listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    companion object {
+        const val EMPTY_LIST_ITEM = 0
+        const val LIST_ITEM = 1
+    }
 
     interface OnItemClickListener {
         fun onItemClick(item: ItemsInFolder)
@@ -19,6 +25,7 @@ class CombinedListAdapter(private val listener: OnItemClickListener) : RecyclerV
     }
 
     class ListViewHolder(val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewEmptyHolder(val binding: ViewEmptyBinding) : RecyclerView.ViewHolder(binding.root)
 
     private var listItems = mutableListOf<ItemsInFolder>()
 
@@ -44,18 +51,24 @@ class CombinedListAdapter(private val listener: OnItemClickListener) : RecyclerV
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ListViewHolder(ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        if (viewType == LIST_ITEM)
+            ListViewHolder(ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        else
+            ViewEmptyHolder(ViewEmptyBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
-    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        with(listItems[position]) {
-            holder.binding.title.text = name
-            val drawableId = when (type) {
-                "Folder" -> R.drawable.ic_folder
-                else -> getTagDrawable(Uri.parse(data), holder.itemView.context)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (getItemViewType(position) == LIST_ITEM) {
+            holder as ListViewHolder
+            with(listItems[position]) {
+                holder.binding.title.text = name
+                val drawableId = when (type) {
+                    "Folder" -> R.drawable.ic_folder
+                    else -> getTagDrawable(Uri.parse(data), holder.itemView.context)
+                }
+                holder.binding.icon.setImageResource(drawableId)
+                holder.itemView.setOnClickListener { listener.onItemClick(this) }
+                holder.itemView.setOnLongClickListener { listener.onItemLongClick(this); true }
             }
-            holder.binding.icon.setImageResource(drawableId)
-            holder.itemView.setOnClickListener { listener.onItemClick(this) }
-            holder.itemView.setOnLongClickListener { listener.onItemLongClick(this); true }
         }
     }
 
@@ -68,9 +81,9 @@ class CombinedListAdapter(private val listener: OnItemClickListener) : RecyclerV
             TagType.WEB -> R.drawable.ic_web
         }
 
-    override fun getItemCount() = listItems.size
+    override fun getItemCount() = if (listItems.size == 0) 1 else listItems.size
 
-    override fun getItemId(position: Int): Long {
-        return listItems[position].hashCode().toLong()
-    }
+    override fun getItemId(position: Int) = if (listItems.size == 0) -1 else listItems[position].hashCode().toLong()
+
+    override fun getItemViewType(position: Int) = if (listItems.size == 0) EMPTY_LIST_ITEM else LIST_ITEM
 }

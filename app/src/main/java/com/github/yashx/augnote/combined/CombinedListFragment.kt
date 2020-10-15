@@ -44,12 +44,14 @@ class CombinedListFragment : BaseFragment(), CombinedListAdapter.OnItemClickList
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = combinedListAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
 
         lifecycleScope.launch {
             queries.itemsInFolder(args.folderId).asFlow().mapToList().collect {
+                (binding.recyclerView).apply {
+                    if (adapter == null) adapter = combinedListAdapter
+                }
                 combinedListAdapter.changeData(it)
             }
         }

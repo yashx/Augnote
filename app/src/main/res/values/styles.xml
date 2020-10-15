@@ -1,13 +1,20 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorWhite</item>
+<!--        <item name="colorPrimary">@color/colorWhite</item>-->
+<!--        <item name="colorPrimaryDark">@color/colorBlack</item>-->
+<!--        <item name="colorAccent">@color/colorBlack</item>-->
+<!--        <item name="colorOnPrimary">@color/colorBlack</item>-->
+<!--        <item name="colorOnBackground">@color/colorBlack</item>-->
+<!--        <item name="colorControlNormal">@color/colorBlack</item>-->
+
+        <item name="colorPrimary">@color/colorBlack</item>
         <item name="colorPrimaryDark">@color/colorBlack</item>
-        <item name="colorAccent">@color/colorBlack</item>
-        <item name="colorOnPrimary">@color/colorBlack</item>
-        <item name="colorOnBackground">@color/colorBlack</item>
-        <item name="colorControlNormal">@color/colorBlack</item>
+        <item name="colorAccent">@color/colorWhite</item>
+        <item name="colorOnPrimary">@color/colorWhite</item>
+        <item name="colorOnBackground">@color/colorWhite</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
     </style>
 
     <style name="AlertDialogStyle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
