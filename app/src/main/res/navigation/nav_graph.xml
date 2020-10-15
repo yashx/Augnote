@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_combinedListFragment_to_editNameDialogFragment"
             app:destination="@id/editNameDialogFragment" />
+        <action
+            android:id="@+id/action_combinedListFragment_to_itemOptionsDialogFragment"
+            app:destination="@id/itemOptionsDialogFragment" />
     </fragment>
     <dialog
         android:id="@+id/addFolderDialogFragment"
@@ -71,4 +74,19 @@
             android:name="itemType"
             app:argType="string" />
     </dialog>
+    <dialog
+        android:id="@+id/itemOptionsDialogFragment"
+        android:name="com.github.yashx.augnote.combined.dialog.ItemOptionsDialogFragment"
+        android:label="ItemOptionsDialogFragment" >
+        <argument
+            android:name="type"
+            app:argType="string" />
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </dialog>
+    <action
+        android:id="@+id/action_global_editNameDialogFragment"
+        app:destination="@id/editNameDialogFragment"
+        app:popUpTo="@id/combinedListFragment" />
 </navigation>

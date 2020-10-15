@@ -29,6 +29,11 @@
     <string name="folder_name">Folder Name</string>
     <string name="name">Name</string>
     <string name="enter_a_url_or_a_uri">Enter a URL or a URI</string>
+
+    <string name="options">Options</string>
+    <string name="edit">Edit Name</string>
+    <string name="delete">Delete</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -86,4 +86,6 @@ class CombinedListAdapter(private val listener: OnItemClickListener) : RecyclerV
     override fun getItemId(position: Int) = if (listItems.size == 0) -1 else listItems[position].hashCode().toLong()
 
     override fun getItemViewType(position: Int) = if (listItems.size == 0) EMPTY_LIST_ITEM else LIST_ITEM
+
+
 }

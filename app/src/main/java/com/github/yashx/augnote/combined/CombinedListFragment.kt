@@ -77,14 +77,16 @@ class CombinedListFragment : BaseFragment(), CombinedListAdapter.OnItemClickList
     }
 
     override fun onItemLongClick(item: ItemsInFolder) {
-        when (item.type) {
-            "Folder" -> {
-                queries.deleteFolder(item.id); combinedListAdapter.notifyDataSetChanged()
-            }
-            "Tag" -> {
-                queries.deleteTag(item.id); combinedListAdapter.notifyDataSetChanged()
-            }
-        }
+        findNavController().navigate(CombinedListFragmentDirections.actionCombinedListFragmentToItemOptionsDialogFragment(item.type, item.id))
+
+//        when (item.type) {
+//            "Folder" -> {
+//                queries.deleteFolder(item.id); combinedListAdapter.notifyDataSetChanged()
+//            }
+//            "Tag" -> {
+//                queries.deleteTag(item.id); combinedListAdapter.notifyDataSetChanged()
+//            }
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

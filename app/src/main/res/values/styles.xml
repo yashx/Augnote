@@ -28,5 +28,23 @@
         <item name="android:textColor">@color/augnote_chip_text_color</item>
     </style>
 
+    <style name="Divider">
+        <item name="android:background">?android:attr/listDivider</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+
+    <style name="Title">
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="SmallTitle">
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
 
 </resources>
