@@ -4,9 +4,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavGraph
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -78,15 +77,6 @@ class CombinedListFragment : BaseFragment(), CombinedListAdapter.OnItemClickList
 
     override fun onItemLongClick(item: ItemsInFolder) {
         findNavController().navigate(CombinedListFragmentDirections.actionCombinedListFragmentToItemOptionsDialogFragment(item.type, item.id))
-
-//        when (item.type) {
-//            "Folder" -> {
-//                queries.deleteFolder(item.id); combinedListAdapter.notifyDataSetChanged()
-//            }
-//            "Tag" -> {
-//                queries.deleteTag(item.id); combinedListAdapter.notifyDataSetChanged()
-//            }
-//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -111,9 +101,8 @@ class CombinedListFragment : BaseFragment(), CombinedListAdapter.OnItemClickList
                 findNavController().navigate(CombinedListFragmentDirections.actionCombinedListFragmentToSearchListFragment())
                 true
             }
-            R.id.barcodeScan -> {
-                // change
-                findNavController().navigate(CombinedListFragmentDirections.actionCombinedListFragmentToAboutFragment(LibsBuilder()))
+            R.id.augnoteOSS -> {
+                findNavController().navigate(NavGraphDirections.actionGlobalAboutLibraryDestinationFragment())
                 true
             }
             else -> false

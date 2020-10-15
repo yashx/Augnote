@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Augnote</string>
+    <string name="tag_line">Make Better Handwritten Notes</string>
 
     <string name="open_file">Open File</string>
     <string name="cant_access_file">Can\'t access File. Maybe deleted.</string>
@@ -33,6 +34,8 @@
     <string name="options">Options</string>
     <string name="edit">Edit Name</string>
     <string name="delete">Delete</string>
+
+    <string name="oss">Open Source</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
