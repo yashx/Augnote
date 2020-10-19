@@ -43,7 +43,7 @@ class TagDialogFragment : DialogFragment(), FileSelectorHelper.Listener {
                         inputUrlUri.isVisible = false
                         selectFileButton.isVisible = true
                     }
-                    R.id.chip_type_url_uri -> {
+                    R.id.chip_type_url -> {
                         inputUrlUri.isVisible = true
                         selectFileButton.isVisible = false
                     }

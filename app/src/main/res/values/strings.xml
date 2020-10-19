@@ -18,7 +18,7 @@
     <string name="file_selected">File Selected</string>
     <string name="new_tag">New Tag</string>
     <string name="tag_type">Tag Type</string>
-    <string name="tag_type_url_uri">URL or URI</string>
+    <string name="tag_type_url">URL</string>
     <string name="tag_type_file">File</string>
 
     <string name="search">Search</string>
@@ -29,13 +29,23 @@
 
     <string name="folder_name">Folder Name</string>
     <string name="name">Name</string>
-    <string name="enter_a_url_or_a_uri">Enter a URL or a URI</string>
+    <string name="enter_a_url">Enter a URL</string>
 
     <string name="options">Options</string>
     <string name="edit">Edit Name</string>
     <string name="delete">Delete</string>
 
-    <string name="oss">Open Source</string>
+    <string name="toggle_theme">Toggle Theme</string>
+    <string name="about">About</string>
+    <string name="go_pro">Remove Ads</string>
+    <string name="share_app">Share App</string>
+    <string name="rate_app">Rate App</string>
+
+    <string name="no_result">No Results</string>
+    <string name="no_content">Empty Folder</string>
+
+    <string name="contact">Contact Developer</string>
+    <string name="send_email">Send Email</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

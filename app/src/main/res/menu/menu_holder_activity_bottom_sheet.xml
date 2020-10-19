@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/toggleTheme"
+        android:title="@string/toggle_theme" />
+    <item
+        android:id="@+id/goPro"
+        android:title="@string/go_pro" />
+    <item
+        android:id="@+id/shareApp"
+        android:title="@string/share_app" />
+    <item
+        android:id="@+id/rateApp"
+        android:title="@string/rate_app" />
+    <item
+        android:id="@+id/augnoteAbout"
+        android:title="@string/about" />
+</menu>

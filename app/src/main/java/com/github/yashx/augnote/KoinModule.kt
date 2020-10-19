@@ -1,6 +1,7 @@
 package com.github.yashx.augnote
 
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.github.yashx.augnote.utils.PrefHelper
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 import org.koin.android.ext.koin.androidContext
@@ -20,4 +21,5 @@ val appModule = module {
         )
     }
     single { Database(get()).augnoteQueries }
+    single { PrefHelper(androidContext()) }
 }

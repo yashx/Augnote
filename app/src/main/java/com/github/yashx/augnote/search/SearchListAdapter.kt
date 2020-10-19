@@ -7,12 +7,22 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.github.yashx.augnote.R
 import com.github.yashx.augnote.Tag
+import com.github.yashx.augnote.combined.CombinedListAdapter
 import com.github.yashx.augnote.databinding.ListItemBinding
+import com.github.yashx.augnote.databinding.ViewEmptyBinding
+import com.github.yashx.augnote.databinding.ViewNoSearchResultBinding
 import com.github.yashx.augnote.helper.TagType
 import com.github.yashx.augnote.helper.tagType
 
-class SearchListAdapter(private val listener: OnItemClickListener) : RecyclerView.Adapter<SearchListAdapter.ListViewHolder>() {
-    class ListViewHolder(val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root)
+class SearchListAdapter(private val listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    companion object {
+        const val EMPTY_LIST_ITEM = 0
+        const val LIST_ITEM = 1
+    }
+
+    class ListViewHolder(val binding: ListItemBinding): RecyclerView.ViewHolder(binding.root)
+    class ViewNoSearchResultHolder(val binding: ViewNoSearchResultBinding): RecyclerView.ViewHolder(binding.root)
 
     interface OnItemClickListener {
         fun onItemClick(item: Tag)
@@ -41,15 +51,21 @@ class SearchListAdapter(private val listener: OnItemClickListener) : RecyclerVie
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        return ListViewHolder(ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        if (viewType == LIST_ITEM)
+            ListViewHolder(ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        else
+            ViewNoSearchResultHolder(ViewNoSearchResultBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
-    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        with(listItems[position]) {
-            holder.binding.title.text = name
-            holder.binding.icon.setImageResource(getTagDrawable(Uri.parse(linkTo), holder.itemView.context))
-            holder.itemView.setOnClickListener { listener.onItemClick(this) }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (getItemViewType(position) == LIST_ITEM) {
+            holder as ListViewHolder
+            with(listItems[position]) {
+                holder.binding.title.text = name
+                holder.binding.icon.setImageResource(getTagDrawable(Uri.parse(linkTo), holder.itemView.context))
+                holder.itemView.setOnClickListener { listener.onItemClick(this) }
+            }
         }
     }
 
@@ -62,7 +78,9 @@ class SearchListAdapter(private val listener: OnItemClickListener) : RecyclerVie
             TagType.WEB -> R.drawable.ic_web
         }
 
-    override fun getItemCount() = listItems.size
+    override fun getItemCount() = if (listItems.size == 0) 1 else listItems.size
 
-    override fun getItemId(position: Int) = listItems[position].hashCode().toLong()
+    override fun getItemId(position: Int) = if (listItems.size == 0) -1 else listItems[position].hashCode().toLong()
+
+    override fun getItemViewType(position: Int) = if (listItems.size == 0) EMPTY_LIST_ITEM else LIST_ITEM
 }

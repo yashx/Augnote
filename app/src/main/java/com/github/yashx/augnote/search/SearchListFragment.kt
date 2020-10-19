@@ -48,13 +48,14 @@ class SearchListFragment : BaseFragment(), SearchListAdapter.OnItemClickListener
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = searchListAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
 
         lifecycleScope.launch {
-            queries.getTagsForQuery("").asFlow().mapToList().collect {
-                Timber.e(it.toString())
+            queries.getTagsForQuery("").executeAsList().also {
+                (binding.recyclerView).apply {
+                    if (adapter == null) adapter = searchListAdapter
+                }
                 searchListAdapter.changeData(it)
             }
         }
@@ -70,7 +71,9 @@ class SearchListFragment : BaseFragment(), SearchListAdapter.OnItemClickListener
                     return false
                 lifecycleScope.launch {
                     queries.getTagsForQuery(p0).asFlow().mapToList().collect {
-                        Timber.e(it.toString())
+                        (binding.recyclerView).apply {
+                            if (adapter == null) adapter = searchListAdapter
+                        }
                         searchListAdapter.changeData(it)
                     }
                 }

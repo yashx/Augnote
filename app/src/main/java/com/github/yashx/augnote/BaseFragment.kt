@@ -8,12 +8,21 @@ abstract class BaseFragment : Fragment() {
     private val holderActivity
         get() = requireActivity() as HolderActivity
 
+    /**
+     * Should show Back Button instead of Hamburger icon, Behaviour is managed by activity
+     *
+     * @return true to show Back Icon, false to show Hamburger Icon
+     */
     abstract fun shouldShowBackButton(): Boolean
+
     abstract fun fragmentTitle(): String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        holderActivity.backButtonVisible = shouldShowBackButton()
+        if(shouldShowBackButton())
+            holderActivity.backButtonVisible = true
+        else
+            holderActivity.hamburgerButtonVisible = true
         holderActivity.toolbarTitle = fragmentTitle()
     }
 }

@@ -101,10 +101,6 @@ class CombinedListFragment : BaseFragment(), CombinedListAdapter.OnItemClickList
                 findNavController().navigate(CombinedListFragmentDirections.actionCombinedListFragmentToSearchListFragment())
                 true
             }
-            R.id.augnoteOSS -> {
-                findNavController().navigate(NavGraphDirections.actionGlobalAboutLibraryDestinationFragment())
-                true
-            }
             else -> false
         }
 }

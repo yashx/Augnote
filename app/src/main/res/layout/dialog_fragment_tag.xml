@@ -49,11 +49,11 @@
             android:text="@string/tag_type_file" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip_type_url_uri"
+            android:id="@+id/chip_type_url"
             style="@style/AugnoteChoiceChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tag_type_url_uri" />
+            android:text="@string/tag_type_url" />
 
     </com.google.android.material.chip.ChipGroup>
 
@@ -70,7 +70,7 @@
         android:id="@+id/input_url_uri"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enter_a_url_or_a_uri"
+        android:hint="@string/enter_a_url"
         android:importantForAutofill="no"
         android:inputType="textUri|text"
         android:visibility="gone"
