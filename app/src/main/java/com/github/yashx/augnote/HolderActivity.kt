@@ -1,27 +1,34 @@
 package com.github.yashx.augnote
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import com.anjlab.android.iab.v3.BillingProcessor
+import com.anjlab.android.iab.v3.TransactionDetails
 import com.github.yashx.augnote.databinding.ActivityHolderBinding
 import com.github.yashx.augnote.utils.Constants
 import com.github.yashx.augnote.utils.PrefHelper
 import org.koin.android.ext.android.inject
+import com.anjlab.android.iab.v3.Constants as BillingConstants
 
 
-class HolderActivity : AppCompatActivity() {
+class HolderActivity : AppCompatActivity(), BillingProcessor.IBillingHandler {
 
     private lateinit var binding: ActivityHolderBinding
     private val prefHelper: PrefHelper by inject()
     private var _backButtonVisible: Boolean = false
     private var _hamburgerButtonVisible: Boolean = false
+    private lateinit var context: Context
     private val navController by lazy { (supportFragmentManager.findFragmentByTag("holder") as NavHostFragment).navController }
+
+    private lateinit var bp: BillingProcessor
 
     var backButtonVisible: Boolean
         set(value) {
@@ -51,6 +58,11 @@ class HolderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        context = this
+
+        bp = BillingProcessor(context, null, this)
+        bp.initialize()
+
         binding = ActivityHolderBinding.inflate(layoutInflater)
         with(binding) {
             setContentView(root)
@@ -58,6 +70,7 @@ class HolderActivity : AppCompatActivity() {
         }
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -66,7 +79,7 @@ class HolderActivity : AppCompatActivity() {
                 onBackPressed()
             else if (hamburgerButtonVisible) {
                 println("HERE")
-                PopupMenu(this, binding.anchor).apply {
+                PopupMenu(context, binding.anchor).apply {
                     inflate(R.menu.menu_holder_activity_bottom_sheet)
                     if (prefHelper.isPro)
                         menu.findItem(R.id.goPro).isVisible = false
@@ -77,13 +90,25 @@ class HolderActivity : AppCompatActivity() {
                                 if (prefHelper.isPro)
                                     navController.navigate(NavGraphDirections.actionGlobalThemeOptionsDialogFragment())
                                 else
-                                    Toast.makeText(this@HolderActivity, "Pro Feature",Toast.LENGTH_SHORT).show()
-//                                    pro
+                                    startPurchaseFlow()
                             }
-//                            R.id.goPro -> goPro
-//                            R.id.shareApp ->
-//                            R.id.rateApp ->
-                            else -> Toast.makeText(this@HolderActivity, it.title, Toast.LENGTH_SHORT).show()
+                            R.id.goPro -> startPurchaseFlow()
+                            R.id.shareApp -> {
+                                Intent(Intent.ACTION_SEND).apply {
+                                    type = "text/plain"
+                                    putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
+                                    val message =
+                                        """
+                                            I found an App to make better Handwritten Notes.
+                                            
+                                            Try it out
+                                            http://play.google.com/store/apps/details?id=${context.packageName}
+                                        """.trimIndent()
+                                    putExtra(Intent.EXTRA_TEXT, message)
+                                }
+                            }
+                            R.id.rateApp -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=${context.packageName}")))
+                            else -> Toast.makeText(context, it.title, Toast.LENGTH_SHORT).show()
 
                         }
                         true
@@ -98,5 +123,53 @@ class HolderActivity : AppCompatActivity() {
             return true
         }
         return false
+    }
+
+    private fun startPurchaseFlow() {
+        if (prefHelper.isPro)
+            return
+
+        if (bp.isInitialized) {
+            bp.purchase(this, Constants.IN_APP_PRODUCT_ID)
+        }
+        else{
+            Toast.makeText(context, R.string.not_init, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onProductPurchased(productId: String, details: TransactionDetails?) {
+        if (productId == Constants.IN_APP_PRODUCT_ID)
+            prefHelper.isPro = true
+    }
+
+    override fun onPurchaseHistoryRestored() {
+        for (prod in bp.listOwnedProducts()) {
+            if (prod == Constants.IN_APP_PRODUCT_ID) {
+                prefHelper.isPro = true
+                break
+            }
+        }
+    }
+
+    override fun onBillingError(errorCode: Int, error: Throwable?) {
+        if (errorCode != BillingConstants.BILLING_RESPONSE_RESULT_USER_CANCELED){
+            Toast.makeText(context, R.string.try_again, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onBillingInitialized() {
+        if (!prefHelper.isPro) {
+            bp.loadOwnedPurchasesFromGoogle()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (!bp.handleActivityResult(requestCode, resultCode, data))
+            super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onDestroy() {
+        bp.release()
+        super.onDestroy()
     }
 }

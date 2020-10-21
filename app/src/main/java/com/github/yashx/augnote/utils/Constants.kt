@@ -11,5 +11,5 @@ object Constants {
     const val DARK_THEME_OPTION = "dark_theme_option"
     const val SYSTEM_THEME_OPTION = "system_theme_option"
 
-
+    const val IN_APP_PRODUCT_ID = "augnote_pro_mode"
 }
