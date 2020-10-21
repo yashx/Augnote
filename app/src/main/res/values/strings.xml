@@ -31,13 +31,18 @@
     <string name="name">Name</string>
     <string name="enter_a_url">Enter a URL</string>
 
+    <string name="choose_theme">Choose Theme</string>
+    <string name="light_theme_option_string">Light Theme</string>
+    <string name="dark_theme_option_string">Dark Theme</string>
+    <string name="system_theme_option_string">Follow System</string>
+
     <string name="options">Options</string>
     <string name="edit">Edit Name</string>
     <string name="delete">Delete</string>
 
-    <string name="toggle_theme">Toggle Theme</string>
+    <string name="change_theme">Theme</string>
     <string name="about">About</string>
-    <string name="go_pro">Remove Ads</string>
+    <string name="go_pro">Go Pro</string>
     <string name="share_app">Share App</string>
     <string name="rate_app">Rate App</string>
 

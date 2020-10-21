@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -17,41 +18,42 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme" />
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/holder"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:tag="holder"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_graph" />
 
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/holder"
-                android:name="androidx.navigation.fragment.NavHostFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:tag="holder"
-                app:defaultNavHost="true"
-                app:navGraph="@navigation/nav_graph" />
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <com.google.android.material.bottomappbar.BottomAppBar
                 android:id="@+id/bottomAppBar"
                 style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                app:hideOnScroll="true" />
+                android:layout_gravity="bottom" />
+
             <View
                 android:id="@+id/anchor"
-                android:layout_gravity="bottom|start"
                 android:layout_width="48dp"
                 android:layout_height="?attr/actionBarSize"
-                android:visibility="invisible"/>
-
+                android:layout_gravity="bottom|start"
+                android:visibility="invisible" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/overlay"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#80000000"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible" />
 </FrameLayout>

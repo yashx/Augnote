@@ -7,8 +7,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.github.yashx.augnote.databinding.ActivityHolderBinding
+import com.github.yashx.augnote.utils.Constants
 import com.github.yashx.augnote.utils.PrefHelper
 import org.koin.android.ext.android.inject
 
@@ -66,18 +68,21 @@ class HolderActivity : AppCompatActivity() {
                 println("HERE")
                 PopupMenu(this, binding.anchor).apply {
                     inflate(R.menu.menu_holder_activity_bottom_sheet)
+                    if (prefHelper.isPro)
+                        menu.findItem(R.id.goPro).isVisible = false
                     setOnMenuItemClickListener {
                         when (it.itemId) {
                             R.id.augnoteAbout -> navController.navigate(NavGraphDirections.actionGlobalAboutLibraryDestinationFragment())
-                            R.id.toggleTheme -> {
-                                AppCompatDelegate.setDefaultNightMode(
-                                    if (prefHelper.isInDarkMode)
-                                        AppCompatDelegate.MODE_NIGHT_NO
-                                    else
-                                        AppCompatDelegate.MODE_NIGHT_YES
-                                )
-                                prefHelper.isInDarkMode = !prefHelper.isInDarkMode
+                            R.id.changeTheme -> {
+                                if (prefHelper.isPro)
+                                    navController.navigate(NavGraphDirections.actionGlobalThemeOptionsDialogFragment())
+                                else
+                                    Toast.makeText(this@HolderActivity, "Pro Feature",Toast.LENGTH_SHORT).show()
+//                                    pro
                             }
+//                            R.id.goPro -> goPro
+//                            R.id.shareApp ->
+//                            R.id.rateApp ->
                             else -> Toast.makeText(this@HolderActivity, it.title, Toast.LENGTH_SHORT).show()
 
                         }

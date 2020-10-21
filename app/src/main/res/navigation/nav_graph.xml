@@ -82,4 +82,8 @@
     <action
         android:id="@+id/action_global_aboutLibraryDestinationFragment"
         app:destination="@id/aboutLibraryDestinationFragment" />
+    <dialog
+        android:id="@+id/themeOptionsDialogFragment"
+        android:name="com.github.yashx.augnote.combined.dialog.ThemeOptionsDialogFragment"
+        android:label="ThemeOptionsDialogFragment" /><action android:id="@+id/action_global_themeOptionsDialogFragment" app:destination="@id/themeOptionsDialogFragment"/>
 </navigation>

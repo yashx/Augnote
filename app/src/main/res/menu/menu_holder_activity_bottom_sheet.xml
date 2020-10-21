@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/toggleTheme"
-        android:title="@string/toggle_theme" />
+        android:id="@+id/changeTheme"
+        android:title="@string/change_theme" />
     <item
         android:id="@+id/goPro"
         android:title="@string/go_pro" />
