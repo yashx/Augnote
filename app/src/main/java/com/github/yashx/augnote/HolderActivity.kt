@@ -105,6 +105,7 @@ class HolderActivity : AppCompatActivity(), BillingProcessor.IBillingHandler {
                                             http://play.google.com/store/apps/details?id=${context.packageName}
                                         """.trimIndent()
                                     putExtra(Intent.EXTRA_TEXT, message)
+                                    startActivity(Intent.createChooser(this, getString(R.string.share_app)))
                                 }
                             }
                             R.id.rateApp -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=${context.packageName}")))
