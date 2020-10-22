@@ -54,6 +54,7 @@
 
     <string name="not_init">Billing not ready. Please try again later</string>
     <string name="try_again">Something went wrong. Please try again later</string>
+    <string name="purchase_success">Premium Unlocked</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

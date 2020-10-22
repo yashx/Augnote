@@ -10,16 +10,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
-import com.anjlab.android.iab.v3.BillingProcessor
-import com.anjlab.android.iab.v3.TransactionDetails
 import com.github.yashx.augnote.databinding.ActivityHolderBinding
 import com.github.yashx.augnote.utils.Constants
 import com.github.yashx.augnote.utils.PrefHelper
+import com.vojtkovszky.billinghelper.BillingEvent
+import com.vojtkovszky.billinghelper.BillingHelper
+import com.vojtkovszky.billinghelper.BillingListener
 import org.koin.android.ext.android.inject
-import com.anjlab.android.iab.v3.Constants as BillingConstants
 
 
-class HolderActivity : AppCompatActivity(), BillingProcessor.IBillingHandler {
+class HolderActivity : AppCompatActivity(), BillingListener {
 
     private lateinit var binding: ActivityHolderBinding
     private val prefHelper: PrefHelper by inject()
@@ -28,7 +28,7 @@ class HolderActivity : AppCompatActivity(), BillingProcessor.IBillingHandler {
     private lateinit var context: Context
     private val navController by lazy { (supportFragmentManager.findFragmentByTag("holder") as NavHostFragment).navController }
 
-    private lateinit var bp: BillingProcessor
+    private lateinit var billingHelper: BillingHelper
 
     var backButtonVisible: Boolean
         set(value) {
@@ -60,8 +60,7 @@ class HolderActivity : AppCompatActivity(), BillingProcessor.IBillingHandler {
 
         context = this
 
-        bp = BillingProcessor(context, null, this)
-        bp.initialize()
+        billingHelper = BillingHelper(context, listOf(Constants.IN_APP_PRODUCT_ID), querySkuDetailsOnConnected = false, billingListener = this)
 
         binding = ActivityHolderBinding.inflate(layoutInflater)
         with(binding) {
@@ -129,48 +128,29 @@ class HolderActivity : AppCompatActivity(), BillingProcessor.IBillingHandler {
     private fun startPurchaseFlow() {
         if (prefHelper.isPro)
             return
-
-        if (bp.isInitialized) {
-            bp.purchase(this, Constants.IN_APP_PRODUCT_ID)
-        }
-        else{
-            Toast.makeText(context, R.string.not_init, Toast.LENGTH_SHORT).show()
-        }
+        billingHelper.launchPurchaseFlow(this, Constants.IN_APP_PRODUCT_ID)
     }
 
-    override fun onProductPurchased(productId: String, details: TransactionDetails?) {
-        if (productId == Constants.IN_APP_PRODUCT_ID)
-            prefHelper.isPro = true
+    override fun onDestroy() {
+        billingHelper.endBillingClientConnection()
+        super.onDestroy()
     }
 
-    override fun onPurchaseHistoryRestored() {
-        for (prod in bp.listOwnedProducts()) {
-            if (prod == Constants.IN_APP_PRODUCT_ID) {
-                prefHelper.isPro = true
-                break
+    override fun onBillingEvent(event: BillingEvent, message: String?, responseCode: Int?) {
+        when (event) {
+            BillingEvent.BILLING_CONNECTION_FAILED, BillingEvent.PURCHASE_FAILED -> toast(R.string.try_again)
+            BillingEvent.PURCHASE_COMPLETE -> {
+                if (billingHelper.isPurchased(Constants.IN_APP_PRODUCT_ID))
+                    prefHelper.isPro = true
+                toast(R.string.purchase_success)
+            }
+            BillingEvent.QUERY_OWNED_PURCHASES_COMPLETE -> {
+                prefHelper.isPro = billingHelper.isPurchased(Constants.IN_APP_PRODUCT_ID)
             }
         }
     }
 
-    override fun onBillingError(errorCode: Int, error: Throwable?) {
-        if (errorCode != BillingConstants.BILLING_RESPONSE_RESULT_USER_CANCELED){
-            Toast.makeText(context, R.string.try_again, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun onBillingInitialized() {
-        if (!prefHelper.isPro) {
-            bp.loadOwnedPurchasesFromGoogle()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (!bp.handleActivityResult(requestCode, resultCode, data))
-            super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    override fun onDestroy() {
-        bp.release()
-        super.onDestroy()
+    private fun toast(strID: Int) {
+        Toast.makeText(context, strID, Toast.LENGTH_SHORT).show()
     }
 }
