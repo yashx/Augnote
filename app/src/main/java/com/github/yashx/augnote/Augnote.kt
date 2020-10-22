@@ -24,10 +24,15 @@ class Augnote : Application() {
         }
 
         AppCompatDelegate.setDefaultNightMode(
-            when (get<PrefHelper>().themeMode) {
-                Constants.SYSTEM_THEME_OPTION -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-                Constants.DARK_THEME_OPTION -> AppCompatDelegate.MODE_NIGHT_YES
-                else -> AppCompatDelegate.MODE_NIGHT_NO
+            with(get<PrefHelper>()) {
+                if (isPro) {
+                    when (themeMode) {
+                        Constants.SYSTEM_THEME_OPTION -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                        Constants.DARK_THEME_OPTION -> AppCompatDelegate.MODE_NIGHT_YES
+                        else -> AppCompatDelegate.MODE_NIGHT_NO
+                    }
+                } else
+                    AppCompatDelegate.MODE_NIGHT_NO
             }
         )
     }

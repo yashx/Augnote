@@ -24,6 +24,7 @@ class PrefHelper(context: Context) {
         set(value) {
             pref.edit {
                 if(!value){
+                    themeMode = Constants.LIGHT_THEME_OPTION
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 }
                 putBoolean(Constants.PREF_IS_PRO, value)

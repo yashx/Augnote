@@ -17,6 +17,7 @@ import com.vojtkovszky.billinghelper.BillingEvent
 import com.vojtkovszky.billinghelper.BillingHelper
 import com.vojtkovszky.billinghelper.BillingListener
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 
 
 class HolderActivity : AppCompatActivity(), BillingListener {
@@ -60,7 +61,7 @@ class HolderActivity : AppCompatActivity(), BillingListener {
 
         context = this
 
-        billingHelper = BillingHelper(context, listOf(Constants.IN_APP_PRODUCT_ID), querySkuDetailsOnConnected = false, billingListener = this)
+        billingHelper = BillingHelper(context, listOf(Constants.IN_APP_PRODUCT_ID), billingListener = this)
 
         binding = ActivityHolderBinding.inflate(layoutInflater)
         with(binding) {
@@ -137,6 +138,7 @@ class HolderActivity : AppCompatActivity(), BillingListener {
     }
 
     override fun onBillingEvent(event: BillingEvent, message: String?, responseCode: Int?) {
+        Timber.e("onBillingEvent:$message ")
         when (event) {
             BillingEvent.BILLING_CONNECTION_FAILED, BillingEvent.PURCHASE_FAILED -> toast(R.string.try_again)
             BillingEvent.PURCHASE_COMPLETE -> {
@@ -145,6 +147,7 @@ class HolderActivity : AppCompatActivity(), BillingListener {
                 toast(R.string.purchase_success)
             }
             BillingEvent.QUERY_OWNED_PURCHASES_COMPLETE -> {
+                Timber.e("Owned: ${billingHelper.isPurchased(Constants.IN_APP_PRODUCT_ID)}")
                 prefHelper.isPro = billingHelper.isPurchased(Constants.IN_APP_PRODUCT_ID)
             }
         }
