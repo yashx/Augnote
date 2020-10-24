@@ -1,4 +1,4 @@
-package com.github.yashx.augnote.combined.dialog
+package com.github.yashx.augnote.holder.dialog
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -10,7 +10,6 @@ import com.github.yashx.augnote.R
 import com.github.yashx.augnote.databinding.DialogFragmentThemeOptionsBinding
 import com.github.yashx.augnote.utils.Constants
 import com.github.yashx.augnote.utils.PrefHelper
-import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 
 class ThemeOptionsDialogFragment : DialogFragment() {

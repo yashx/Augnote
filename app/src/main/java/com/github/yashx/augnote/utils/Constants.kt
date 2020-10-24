@@ -11,5 +11,8 @@ object Constants {
     const val DARK_THEME_OPTION = "dark_theme_option"
     const val SYSTEM_THEME_OPTION = "system_theme_option"
 
+    const val PREF_IS_FIRST_RUN = "pref_is_first_run"
+    const val YOUTUBE_URL = "https://www.youtube.com/watch?v=AnFxzVnRY04"
+
     const val IN_APP_PRODUCT_ID = "augnote_pro_mode"
 }

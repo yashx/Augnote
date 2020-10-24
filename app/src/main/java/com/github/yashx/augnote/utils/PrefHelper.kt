@@ -30,4 +30,12 @@ class PrefHelper(context: Context) {
                 putBoolean(Constants.PREF_IS_PRO, value)
             }
         }
+
+    var isFirstRun: Boolean
+    get() = pref.getBoolean(Constants.PREF_IS_FIRST_RUN, true)
+    set(value) {
+        pref.edit {
+            putBoolean(Constants.PREF_IS_FIRST_RUN, value)
+        }
+    }
 }

@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.github.yashx.augnote.HolderActivity
+import com.github.yashx.augnote.holder.HolderActivity
 import com.github.yashx.augnote.R
 import com.github.yashx.augnote.utils.Constants
 import com.mikepenz.aboutlibraries.Libs

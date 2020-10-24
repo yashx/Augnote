@@ -3,6 +3,7 @@ package com.github.yashx.augnote
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.github.yashx.augnote.holder.HolderActivity
 
 abstract class BaseFragment : Fragment() {
     private val holderActivity

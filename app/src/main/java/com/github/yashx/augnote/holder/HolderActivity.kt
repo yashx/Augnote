@@ -1,4 +1,4 @@
-package com.github.yashx.augnote
+package com.github.yashx.augnote.holder
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
+import com.github.yashx.augnote.NavGraphDirections
+import com.github.yashx.augnote.R
 import com.github.yashx.augnote.databinding.ActivityHolderBinding
 import com.github.yashx.augnote.utils.Constants
 import com.github.yashx.augnote.utils.PrefHelper
@@ -70,6 +72,12 @@ class HolderActivity : AppCompatActivity(), BillingListener {
         }
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        if (prefHelper.isFirstRun){
+            prefHelper.isFirstRun = false
+            navController.navigate(NavGraphDirections.actionGlobalInstructionsDialogFragment())
+        }
+
 
     }
 
